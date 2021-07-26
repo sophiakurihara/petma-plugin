@@ -1,0 +1,7 @@
+{
+  "name": "petma-plugin",
+  "id": "1001608940313848118",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html"
+}
