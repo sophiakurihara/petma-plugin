@@ -36,7 +36,7 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
         defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
     }
     else {
-        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=false");
+        defaultPost = postComponentSet.defaultVariant;
     }
     console.log(defaultPost);
     // let defaultDarkTweet = postComponentSet.findOne(node => node.name.indexOf("Images=none, Dark mode=true") > -1) as ComponentNode;

@@ -38,7 +38,7 @@ figma.ui.onmessage = async(pluginMessage) => {
        // not working???
       defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true") as ComponentNode;
      } else {
-      defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=false" ) as ComponentNode;
+      defaultPost = postComponentSet.defaultVariant as ComponentNode;
      }
      
 
