@@ -21,63 +21,51 @@ figma.ui.resize(500, 500);
 figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function* () {
     // One way of distinguishing between different types of messages sent froms
     // your HTML page is to use an object with a "type" property like this.
-    // Is there a more efficient way to do this with Promises? Would that be too complex for a beginner?
     yield figma.loadFontAsync({ family: "Rubik", style: "Regular" });
-    console.log(pluginMessage.imageVariant);
     const nodes = [];
-    // pull tweet component set
+    // pull post component set
     let postComponentSet = figma.root.findOne(node => node.type == "COMPONENT_SET" && node.name == "post");
-    // pulling the default component (1st phase of plugin)
-    // will need to write a conditional that builds specific tweet style based on user choice. maybe checkbox? pass over a value that matches the node name. 
-    let defaultPost;
-    // TODO: conditional to create specific tweet variant
+    let postTemplate;
     if (pluginMessage.darkModeState === true) {
-        // not working???
         if (pluginMessage.imageVariant == 1) {
-            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
         }
         else if (pluginMessage.imageVariant == 2) {
-            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
+            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
         }
         else if (pluginMessage.imageVariant == 3) {
-            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
         }
     }
     else {
         if (pluginMessage.imageVariant == 1) {
-            defaultPost = postComponentSet.defaultVariant;
+            postTemplate = postComponentSet.defaultVariant;
         }
         else if (pluginMessage.imageVariant == 2) {
-            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
+            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
         }
         else if (pluginMessage.imageVariant == 3) {
-            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
         }
     }
-    console.log(defaultPost);
-    // let defaultDarkTweet = postComponentSet.findOne(node => node.name.indexOf("Images=none, Dark mode=true") > -1) as ComponentNode;
-    // create an instance of the default tweet style
-    let newPost = defaultPost.createInstance();
-    console.log(newPost);
-    // base component within the created tweet
-    // let baseTweetCard = newPost.children[0] as ComponentNode;
-    let defaultName = newPost.findOne(node => node.name == "displayName" && node.type == "TEXT");
-    console.log(defaultName);
-    let defaultUsername = newPost.findOne(node => node.name == "username" && node.type == "TEXT");
-    // default tweet content in the created tweet
-    let defaultContent = newPost.findOne(node => node.name == "description" && node.type == "TEXT");
-    console.log(defaultContent);
+    // create an instance of the selected post template
+    let newPost = postTemplate.createInstance();
+    let templateName = newPost.findOne(node => node.name == "displayName" && node.type == "TEXT");
+    let templateUsername = newPost.findOne(node => node.name == "username" && node.type == "TEXT");
+    let templateContent = newPost.findOne(node => node.name == "description" && node.type == "TEXT");
+    let numLikes = newPost.findOne(node => node.name == "likesLabel" && node.type == "TEXT");
+    let numComments = newPost.findOne(node => node.name == "commentsLabel" && node.type == "TEXT");
     // if finding these children by array position, how is index determined?
-    //TODO: access the Name textnode and change it in the new instance
-    if ((defaultName.type !== "TEXT" && defaultName.name !== "displayName") ||
-        (defaultUsername.type !== "TEXT" && defaultUsername.name !== "username") ||
-        (defaultContent.type !== "TEXT" && defaultContent.name !== "description")) {
+    if ((templateName.type !== "TEXT" && templateName.name !== "displayName") ||
+        (templateUsername.type !== "TEXT" && templateUsername.name !== "username") ||
+        (templateContent.type !== "TEXT" && templateContent.name !== "description")) {
         figma.closePlugin("unexpected child");
         return;
     }
-    defaultName.characters = pluginMessage.name;
-    defaultUsername.characters = pluginMessage.username;
-    defaultContent.characters = pluginMessage.body;
+    templateName.characters = pluginMessage.name;
+    templateUsername.characters = pluginMessage.username;
+    templateContent.characters = pluginMessage.body;
+    numLikes.characters = Math.floor(Math.random() * 100);
     // TODO: Use JS dateTime function to get current date and time for tweet
     // TODO: Use random number generator for # of likes and retweets
     nodes.push(newPost);
