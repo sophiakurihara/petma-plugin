@@ -23,7 +23,7 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
     // your HTML page is to use an object with a "type" property like this.
     // Is there a more efficient way to do this with Promises? Would that be too complex for a beginner?
     yield figma.loadFontAsync({ family: "Rubik", style: "Regular" });
-    console.log(pluginMessage.darkModeState);
+    console.log(pluginMessage.imageVariant);
     const nodes = [];
     // pull tweet component set
     let postComponentSet = figma.root.findOne(node => node.type == "COMPONENT_SET" && node.name == "post");
@@ -33,10 +33,26 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
     // TODO: conditional to create specific tweet variant
     if (pluginMessage.darkModeState === true) {
         // not working???
-        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+        if (pluginMessage.imageVariant == 1) {
+            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+        }
+        else if (pluginMessage.imageVariant == 2) {
+            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
+        }
+        else if (pluginMessage.imageVariant == 3) {
+            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+        }
     }
     else {
-        defaultPost = postComponentSet.defaultVariant;
+        if (pluginMessage.imageVariant == 1) {
+            defaultPost = postComponentSet.defaultVariant;
+        }
+        else if (pluginMessage.imageVariant == 2) {
+            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
+        }
+        else if (pluginMessage.imageVariant == 3) {
+            defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+        }
     }
     console.log(defaultPost);
     // let defaultDarkTweet = postComponentSet.findOne(node => node.name.indexOf("Images=none, Dark mode=true") > -1) as ComponentNode;

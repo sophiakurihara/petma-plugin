@@ -21,7 +21,7 @@ figma.ui.onmessage = async(pluginMessage) => {
  
   await figma.loadFontAsync({ family: "Rubik", style: "Regular" })
 
-    console.log(pluginMessage.darkModeState);
+    console.log(pluginMessage.imageVariant)
 
     const nodes: SceneNode[] = [];
 
@@ -36,9 +36,21 @@ figma.ui.onmessage = async(pluginMessage) => {
     
      if(pluginMessage.darkModeState === true) {
        // not working???
-      defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true") as ComponentNode;
-     } else {
-      defaultPost = postComponentSet.defaultVariant as ComponentNode;
+      if(pluginMessage.imageVariant == 1) {
+        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true") as ComponentNode;
+      } else if(pluginMessage.imageVariant == 2) {
+        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true") as ComponentNode;
+      } else if(pluginMessage.imageVariant == 3) {
+        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true") as ComponentNode;
+      }
+    } else {
+      if(pluginMessage.imageVariant == 1) {
+        defaultPost = postComponentSet.defaultVariant as ComponentNode;
+      } else if(pluginMessage.imageVariant == 2) {
+        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false") as ComponentNode;
+      } else if(pluginMessage.imageVariant == 3) {
+        defaultPost = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false") as ComponentNode;
+      }
      }
      
 

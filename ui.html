@@ -1,18 +1,24 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thomas-lowry/figma-plugin-ds/dist/figma-plugin-ds.css">
 
-<h2>Tweet Creator</h2>
+<h2>Petma post creator</h2>
       <div>
-        <p>Name: <input class="input__field" type="text" value="Your Twitter name here" id="name"></p>
-        <p>Username: <input class="input__field" type="text" value="Your Twitter username" id="username"></p>
-        <p>Tweet: <input class="textarea" rows="2" type="textarea" value="Your tweet goes here. 280 characters!" id="body"></p>
+        <p>Name: <input class="input__field" type="text" value="Your Petma display name here" id="name"></p>
+        <p>Username: <input class="input__field" type="text" value="Your Petma username" id="username"></p>
+        <p>Body: <input class="textarea" rows="2" type="textarea" value="Your post goes here. 280 characters!" id="body"></p>
       </div>
       <div class="switch">
         <input class="switch__toggle" type="checkbox" id="dark-mode-on">
         <label class="switch__label" for="dark-mode-on">Dark mode</label>
      </div>
       <div class="radio">
-        <input id="radioButton1"type="radio" class="radio__button" value="Value" name="radioGroup" >
-        <label for="radioButton1" class="radio__label">Radio button</label>
+        <input id="radioButton1" type="radio" class="radio__button" value="1" name="variantGroup">
+        <label for="radioButton1" class="radio__label">No image</label>  
+
+        <input id="radioButton2" type="radio" class="radio__button" value="2" name="variantGroup">
+        <label for="radioButton2" class="radio__label">Single image</label>
+    
+        <input id="radioButton3" type="radio" class="radio__button" value="3" name="variantGroup">
+        <label for="radioButton3" class="radio__label">Carousel</label>
       </div>
       <button class="button button--primary" id="submit-post">Submit</button>
       <!-- TODO: add toggle for Dark mode-->
@@ -25,10 +31,11 @@ document.getElementById('submit-post').onclick = () => {
   const name = document.getElementById('name').value;
   const username = document.getElementById('username').value;
   const body = document.getElementById('body').value;
-  let darkModeState = document.getElementById('dark-mode-on').checked;
+  const darkModeState = document.getElementById('dark-mode-on').checked;
+  const imageVariant = document.querySelector('input[name="variantGroup"]:checked').value;
 
   // submit the tweet along with the inputs
-  parent.postMessage({ pluginMessage: { type: 'submit-post', name, username, body, darkModeState } }, '*')
+  parent.postMessage({ pluginMessage: { type: 'submit-post', name, username, body, darkModeState, imageVariant } }, '*')
 }
 </script>
 
