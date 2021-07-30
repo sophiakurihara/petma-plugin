@@ -65,7 +65,8 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
     templateName.characters = pluginMessage.name;
     templateUsername.characters = pluginMessage.username;
     templateContent.characters = pluginMessage.body;
-    numLikes.characters = Math.floor(Math.random() * 100);
+    numLikes.characters = (Math.floor(Math.random() * 1000) + 1).toString();
+    numComments.characters = (Math.floor(Math.random() * 1000) + 1).toString();
     // TODO: Use JS dateTime function to get current date and time for tweet
     // TODO: Use random number generator for # of likes and retweets
     nodes.push(newPost);
