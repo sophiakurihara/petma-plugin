@@ -8,44 +8,46 @@
    }
 </style>
 
-<h2>Petma post creator</h2>
-      <div>
-        <p>Name: <input class="input__field" type="text" value="Your Petma display name here" id="name"></p>
-        <p>Username: <input class="input__field" type="text" value="Your Petma username" id="username"></p>
-        <p>Body: <input class="textarea" rows="2" type="textarea" value="Your post goes here. 280 characters!" id="body"></p>
-      </div>
-      <div class="switch">
-        <input class="switch__toggle" type="checkbox" id="dark-mode-on">
-        <label class="switch__label" for="dark-mode-on">Dark mode</label>
-     </div>
-      <div class="radio">
-        <input id="radioButton1" type="radio" class="radio__button" value="1" name="variantGroup">
-        <label for="radioButton1" class="radio__label">No image</label>  
+<h2>Petma post creator</h2> 
+  <div>
+    <label for="username">Username</label>
+    <input class="input__field" type="text" value="Your Petma username" id="username">
+    <p>Name: <input class="input__field" type="text" value="Your Petma display name here" id="name"></p>
+    <p>Body: <input class="textarea" rows="2" type="textarea" value="Your post goes here. 280 characters!" id="body"></p>
+  </div>
+  <div class="switch">
+    <input class="switch__toggle" type="checkbox" id="dark-mode-on">
+    <label class="switch__label" for="dark-mode-on">Dark mode</label>
+  </div>
+  <div class="radio">
+    <input id="radioButton1" type="radio" class="radio__button" value="1" name="variantGroup">
+    <label for="radioButton1" class="radio__label">No image</label>  
 
-        <input id="radioButton2" type="radio" class="radio__button" value="2" name="variantGroup">
-        <label for="radioButton2" class="radio__label">Single image</label>
+    <input id="radioButton2" type="radio" class="radio__button" value="2" name="variantGroup">
+    <label for="radioButton2" class="radio__label">Single image</label>
     
-        <input id="radioButton3" type="radio" class="radio__button" value="3" name="variantGroup">
-        <label for="radioButton3" class="radio__label">Carousel</label>
-      </div>
-      <div>
-        <button class="button button--primary" id="submit-post">Submit</button>
-      </div>
+    <input id="radioButton3" type="radio" class="radio__button" value="3" name="variantGroup">
+    <label for="radioButton3" class="radio__label">Carousel</label>
+  </div>
+  <div>
+    <button class="button button--primary" id="submit-post">Submit</button>
+  </div>
+  
       <!-- TODO: add toggle for Dark mode-->
 
       <!-- TODO: add radio buttons to select Tweet style -->
 <script>
+  document.getElementById('submit-post').onclick = () => {
+    // pull values from inputs
+    const name = document.getElementById('name').value;
+    const username = document.getElementById('username').value;
+    const body = document.getElementById('body').value;
+    const darkModeState = document.getElementById('dark-mode-on').checked;
+    // Figma update results in imageVariant returning a string value 
+    const imageVariant = document.querySelector('input[name="variantGroup"]:checked').value;
 
-document.getElementById('submit-post').onclick = () => {
-  // pull values from inputs
-  const name = document.getElementById('name').value;
-  const username = document.getElementById('username').value;
-  const body = document.getElementById('body').value;
-  const darkModeState = document.getElementById('dark-mode-on').checked;
-  const imageVariant = document.querySelector('input[name="variantGroup"]:checked').value;
-
-  // submit the tweet along with the inputs
-  parent.postMessage({ pluginMessage: { type: 'submit-post', name, username, body, darkModeState, imageVariant } }, '*')
-}
+    // submit the tweet along with the inputs
+    parent.postMessage({ pluginMessage: { type: 'submit-post', name, username, body, darkModeState, imageVariant } }, '*')
+  }
 </script>
 

@@ -27,34 +27,35 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
     let postComponentSet = figma.root.findOne(node => node.type == "COMPONENT_SET" && node.name == "post");
     let postTemplate;
     if (pluginMessage.darkModeState === true) {
-        if (pluginMessage.imageVariant == 1) {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+        if (pluginMessage.imageVariant === "1") {
+            this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
         }
-        else if (pluginMessage.imageVariant == 2) {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
+        else if (pluginMessage.imageVariant === "2") {
+            this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
+            console.log(postTemplate);
         }
-        else if (pluginMessage.imageVariant == 3) {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+        else if (pluginMessage.imageVariant === "3") {
+            this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
         }
     }
     else {
-        if (pluginMessage.imageVariant == 1) {
-            postTemplate = postComponentSet.defaultVariant;
+        if (pluginMessage.imageVariant === "1") {
+            this.postTemplate = postComponentSet.defaultVariant;
         }
-        else if (pluginMessage.imageVariant == 2) {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
+        else if (pluginMessage.imageVariant === "2") {
+            this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
         }
-        else if (pluginMessage.imageVariant == 3) {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+        else if (pluginMessage.imageVariant === "3") {
+            this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
         }
     }
     // create an instance of the selected post template
     let newPost = postTemplate.createInstance();
-    let templateName = newPost.findOne(node => node.name == "displayName" && node.type == "TEXT");
-    let templateUsername = newPost.findOne(node => node.name == "username" && node.type == "TEXT");
-    let templateContent = newPost.findOne(node => node.name == "description" && node.type == "TEXT");
-    let numLikes = newPost.findOne(node => node.name == "likesLabel" && node.type == "TEXT");
-    let numComments = newPost.findOne(node => node.name == "commentsLabel" && node.type == "TEXT");
+    let templateName = newPost.findOne(node => node.name === "displayName" && node.type === "TEXT");
+    let templateUsername = newPost.findOne(node => node.name === "username" && node.type === "TEXT");
+    let templateContent = newPost.findOne(node => node.name === "description" && node.type === "TEXT");
+    let numLikes = newPost.findOne(node => node.name === "likesLabel" && node.type === "TEXT");
+    let numComments = newPost.findOne(node => node.name === "commentsLabel" && node.type === "TEXT");
     // if finding these children by array position, how is index determined?
     if ((templateName.type !== "TEXT" && templateName.name !== "displayName") ||
         (templateUsername.type !== "TEXT" && templateUsername.name !== "username") ||
@@ -62,13 +63,12 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
         figma.closePlugin("unexpected child");
         return;
     }
-    templateName.characters = pluginMessage.name;
-    templateUsername.characters = pluginMessage.username;
-    templateContent.characters = pluginMessage.body;
+    templateName.characters = (pluginMessage === null || pluginMessage === void 0 ? void 0 : pluginMessage.name) || '';
+    templateUsername.characters = (pluginMessage === null || pluginMessage === void 0 ? void 0 : pluginMessage.username) || '';
+    templateContent.characters = (pluginMessage === null || pluginMessage === void 0 ? void 0 : pluginMessage.body) || '';
     numLikes.characters = (Math.floor(Math.random() * 1000) + 1).toString();
     numComments.characters = (Math.floor(Math.random() * 1000) + 1).toString();
     // TODO: Use JS dateTime function to get current date and time for tweet
-    // TODO: Use random number generator for # of likes and retweets
     nodes.push(newPost);
     figma.currentPage.selection = nodes;
     figma.viewport.scrollAndZoomIntoView(nodes);
