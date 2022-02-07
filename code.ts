@@ -25,27 +25,29 @@ figma.ui.onmessage = async(pluginMessage) => {
   // pull post component set
   let postComponentSet = figma.root.findOne(node => node.type == "COMPONENT_SET" && node.name == "post") as ComponentSetNode;
     
-  let postTemplate: ComponentNode;
+  let postTemplate;
+
   
   if(pluginMessage.darkModeState === true) {
     if(pluginMessage.imageVariant === "1") {
-      this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+      postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
     } else if(pluginMessage.imageVariant === "2") {
-      this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true")
+      postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true")
       console.log(postTemplate);
     } else if(pluginMessage.imageVariant === "3") {
-      this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+      postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
     }
   } else {
     if(pluginMessage.imageVariant === "1") {
-      this.postTemplate = postComponentSet.defaultVariant;
+      postTemplate = postComponentSet.defaultVariant;
     } else if(pluginMessage.imageVariant === "2") {
-      this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
+      postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
     } else if(pluginMessage.imageVariant === "3") {
-      this.postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+      postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
     }
   }
-
+  console.log(typeof pluginMessage.darkModeState)
+  console.log(typeof postTemplate)
 
     // create an instance of the selected post template
 
@@ -53,7 +55,7 @@ figma.ui.onmessage = async(pluginMessage) => {
 
   let templateName = newPost.findOne(node => node.name === "displayName" && node.type === "TEXT") as TextNode;
 
-  let templateUsername = newPost.findOne(node => node.name === "username" && node.type === "TEXT") as TextNode;
+  let templateUsername = newPost.findOne(node => node.name === "@username" && node.type === "TEXT") as TextNode;
 
   let templateContent = newPost.findOne(node => node.name === "description" && node.type === "TEXT") as TextNode;
 
