@@ -27,30 +27,51 @@ figma.ui.onmessage = (pluginMessage) => __awaiter(this, void 0, void 0, function
     let postComponentSet = figma.root.findOne(node => node.type == "COMPONENT_SET" && node.name == "post");
     let postTemplate;
     if (pluginMessage.darkModeState === true) {
-        if (pluginMessage.imageVariant === "1") {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
-        }
-        else if (pluginMessage.imageVariant === "2") {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
-            console.log(postTemplate);
-        }
-        else if (pluginMessage.imageVariant === "3") {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+        switch (pluginMessage.imageVariant) {
+            case 2:
+                postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true");
+                break;
+            case 3:
+                postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+                break;
+            default:
+                postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+                break;
         }
     }
     else {
-        if (pluginMessage.imageVariant === "1") {
-            postTemplate = postComponentSet.defaultVariant;
-        }
-        else if (pluginMessage.imageVariant === "2") {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
-        }
-        else if (pluginMessage.imageVariant === "3") {
-            postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+        switch (pluginMessage.imageVariant) {
+            case 2:
+                postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
+                break;
+            case 3:
+                postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+                break;
+            default:
+                postTemplate = postComponentSet.defaultVariant;
+                break;
         }
     }
+    // if(pluginMessage.darkModeState === true) {
+    //   if(pluginMessage.imageVariant === "1") {
+    //     postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=none, Dark mode=true");
+    //   } else if(pluginMessage.imageVariant === "2") {
+    //     postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=true")
+    //     console.log(postTemplate);
+    //   } else if(pluginMessage.imageVariant === "3") {
+    //     postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=true");
+    //   }
+    // } else {
+    //   if(pluginMessage.imageVariant === "1") {
+    //     postTemplate = postComponentSet.defaultVariant;
+    //   } else if(pluginMessage.imageVariant === "2") {
+    //     postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=single, Dark mode=false");
+    //   } else if(pluginMessage.imageVariant === "3") {
+    //     postTemplate = postComponentSet.findOne(node => node.type == "COMPONENT" && node.name == "Image=carousel, Dark mode=false");
+    //   }
+    // }
     console.log(typeof pluginMessage.darkModeState);
-    console.log(typeof postTemplate);
+    console.log(postComponentSet);
     // create an instance of the selected post template
     let newPost = postTemplate.createInstance();
     let templateName = newPost.findOne(node => node.name === "displayName" && node.type === "TEXT");
